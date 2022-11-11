@@ -14,45 +14,43 @@ export default function ProductShowcase() {
   );
 
   const updateMugs = (e) => {
-        setNbMugs(Number(e.target.value));
+    setNbMugs(Number(e.target.value));
   };
 
   const addingInfo = useRef();
   let timerInfo;
   let display = true;
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const addToCart = e => {
-    e.preventDefault()
+  const addToCart = (e) => {
+    e.preventDefault();
 
     const itemAdded = {
       ...inventory[productClicked],
-      quantity: nbMugs
-    }
+      quantity: nbMugs,
+    };
 
     dispatch({
       type: "ADDITEM",
-      payload: itemAdded
-    })
-    
-    addingInfo.current.innerText = "Ajouté au panier"
+      payload: itemAdded,
+    });
 
-    if(display){
+    addingInfo.current.innerText = "Ajouté au panier";
+
+    if (display) {
       display = false;
-      timerInfo = setTimeout(() => {
-        addingInfo.current.innerText = "";
-        display = true;
-      }, 500)
+      useEffect(() => {
+        const timerInfo = setTimeout(() => {
+          addingInfo.current.innerText = "";
+          display = true;
+        }, 500);
+        return () => {
+          clearTimeout(timerInfo);
+        };
+      }, []);
     }
-  }
-
-  useEffect(() => {
-      return () => {
-        clearTimeout(timerInfo)
-        
-      }
-  }, [])
+  };
 
   return (
     <div className="showcase">
@@ -78,9 +76,7 @@ export default function ProductShowcase() {
             onChange={updateMugs}
           />
           <button>Ajouter au panier</button>
-          <span 
-          ref={addingInfo}
-          className="adding-info"></span>
+          <span ref={addingInfo} className="adding-info"></span>
         </form>
       </div>
     </div>
