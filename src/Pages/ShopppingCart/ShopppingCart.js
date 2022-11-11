@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./ShoppingCart.css";
 
@@ -33,8 +33,9 @@ export default function ShopppingCart() {
         {storeState.cart.map((item) => (
           <li key={item.id}>
             <img
+             alt="Panier"
               src={process.env.PUBLIC_URL + `/images/${item.img}.jpg`}
-              alt="Image Panier"
+             
             />
             <div className="bloc-cart-infos">
               <h4>{item.title}</h4>

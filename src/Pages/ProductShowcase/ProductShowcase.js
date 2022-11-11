@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./ProductShowcase.css";
@@ -21,7 +21,6 @@ export default function ProductShowcase() {
   };
 
   const addingInfo = useRef();
-  let timerInfo;
   let display = true;
 
   const dispatch = useDispatch();
@@ -43,18 +42,13 @@ export default function ProductShowcase() {
 
     if (display) {
       display = false;
+      let timerInfo;
       timerInfo = setTimeout(() => {
         addingInfo.current.innerText = "";
         display = true;
       }, 500);
     }
   };
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(timerInfo);
-    };
-  }, []);
 
   return (
     <div className="showcase">
