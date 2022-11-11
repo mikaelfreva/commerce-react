@@ -9,8 +9,11 @@ export default function ProductShowcase() {
 
   const { id } = useParams();
 
+  console.log(id);
+
   const productClicked = inventory.findIndex(
-    (obj) => obj.title.replace(/\s+/g, "").trim() === id
+   
+    (obj) => obj.title.replace(/\s+/g, "").trim() === id,
   );
 
   const updateMugs = (e) => {
@@ -40,17 +43,14 @@ export default function ProductShowcase() {
 
     if (display) {
       display = false;
-      useEffect(() => {
-        const timerInfo = setTimeout(() => {
-          addingInfo.current.innerText = "";
-          display = true;
-        }, 500);
-        return () => {
-          clearTimeout(timerInfo);
-        };
-      }, []);
+      timerInfo = setTimeout(() => {
+        addingInfo.current.innerText = "";
+        display = true;
+      }, 500);
     }
   };
+
+
 
   return (
     <div className="showcase">
@@ -59,7 +59,7 @@ export default function ProductShowcase() {
           className="img-showcase"
           src={
             process.env.PUBLIC_URL +
-            `/images/${inventory[productClicked].img}.png`
+            `/images/${inventory[productClicked].img}.jpg`
           }
           alt=""
         />
