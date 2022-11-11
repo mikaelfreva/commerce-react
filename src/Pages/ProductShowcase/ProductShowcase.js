@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./ProductShowcase.css";
@@ -9,46 +9,50 @@ export default function ProductShowcase() {
 
   const { id } = useParams();
 
-  console.log(id);
-
   const productClicked = inventory.findIndex(
-   
-    (obj) => obj.title.replace(/\s+/g, "").trim() === id,
+    (obj) => obj.title.replace(/\s+/g, "").trim() === id
   );
 
   const updateMugs = (e) => {
-    setNbMugs(Number(e.target.value));
+        setNbMugs(Number(e.target.value));
   };
 
   const addingInfo = useRef();
+  let timerInfo;
   let display = true;
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const addToCart = (e) => {
-    e.preventDefault();
+  const addToCart = e => {
+    e.preventDefault()
 
     const itemAdded = {
       ...inventory[productClicked],
-      quantity: nbMugs,
-    };
+      quantity: nbMugs
+    }
 
     dispatch({
       type: "ADDITEM",
-      payload: itemAdded,
-    });
+      payload: itemAdded
+    })
+    
+    addingInfo.current.innerText = "Ajouté au panier"
 
-    addingInfo.current.innerText = "Ajouté au panier";
-
-    if (display) {
+    if(display){
       display = false;
-      let timerInfo;
       timerInfo = setTimeout(() => {
         addingInfo.current.innerText = "";
         display = true;
-      }, 500);
+      }, 500)
     }
-  };
+  }
+
+  useEffect(() => {
+      return () => {
+        clearTimeout(timerInfo)
+        
+      }
+  }, [])
 
   return (
     <div className="showcase">
@@ -57,7 +61,7 @@ export default function ProductShowcase() {
           className="img-showcase"
           src={
             process.env.PUBLIC_URL +
-            `/images/${inventory[productClicked].img}.jpg`
+            `/images/${inventory[productClicked].img}.png`
           }
           alt=""
         />
@@ -74,7 +78,9 @@ export default function ProductShowcase() {
             onChange={updateMugs}
           />
           <button>Ajouter au panier</button>
-          <span ref={addingInfo} className="adding-info"></span>
+          <span 
+          ref={addingInfo}
+          className="adding-info"></span>
         </form>
       </div>
     </div>
